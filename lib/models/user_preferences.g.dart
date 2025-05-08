@@ -1,0 +1,102 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'user_preferences.dart';
+
+// **************************************************************************
+// TypeAdapterGenerator
+// **************************************************************************
+
+class UserPreferencesAdapter extends TypeAdapter<UserPreferences> {
+  @override
+  final int typeId = 5;
+
+  @override
+  UserPreferences read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return UserPreferences(
+      favoriteCompetitions: (fields[0] as List).cast<int>(),
+      subscribedMatches: (fields[1] as List).cast<int>(),
+      subscribedCompetitions: (fields[4] as List).cast<int>(),
+      notificationSettings: fields[2] as NotificationSettings,
+      lastViewedDate: fields[3] as String?,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, UserPreferences obj) {
+    writer
+      ..writeByte(5)
+      ..writeByte(0)
+      ..write(obj.favoriteCompetitions)
+      ..writeByte(1)
+      ..write(obj.subscribedMatches)
+      ..writeByte(4)
+      ..write(obj.subscribedCompetitions)
+      ..writeByte(2)
+      ..write(obj.notificationSettings)
+      ..writeByte(3)
+      ..write(obj.lastViewedDate);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is UserPreferencesAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class NotificationSettingsAdapter extends TypeAdapter<NotificationSettings> {
+  @override
+  final int typeId = 6;
+
+  @override
+  NotificationSettings read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return NotificationSettings(
+      goalNotifications: fields[0] as bool,
+      redCardNotifications: fields[1] as bool,
+      matchStartNotifications: fields[2] as bool,
+      halfTimeNotifications: fields[3] as bool,
+      fullTimeNotifications: fields[4] as bool,
+      competitionUpdateNotifications: fields[5] as bool,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, NotificationSettings obj) {
+    writer
+      ..writeByte(6)
+      ..writeByte(0)
+      ..write(obj.goalNotifications)
+      ..writeByte(1)
+      ..write(obj.redCardNotifications)
+      ..writeByte(2)
+      ..write(obj.matchStartNotifications)
+      ..writeByte(3)
+      ..write(obj.halfTimeNotifications)
+      ..writeByte(4)
+      ..write(obj.fullTimeNotifications)
+      ..writeByte(5)
+      ..write(obj.competitionUpdateNotifications);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is NotificationSettingsAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}

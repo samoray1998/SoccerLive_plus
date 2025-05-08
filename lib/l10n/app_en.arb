@@ -1,0 +1,67 @@
+{
+  "appTitle": "Soccer Plus",
+  
+  "todayMatches": "Today's Matches",
+  "competitions": "Competitions",
+  "subscriptions": "Subscriptions",
+  
+  "standings": "Standings",
+  "matches": "Matches",
+  "teams": "Teams",
+  
+  "searchCompetitions": "Search competitions",
+  "noCompetitionsFound": "No competitions found",
+  "favorites": "Favorites only",
+  "upcomingMatches": "Upcoming Matches",
+  "noMatchesFound": "No matches found",
+  
+  "matchDetails": "Match Details",
+  "summary": "Summary",
+  "lineups": "Lineups",
+  "formation": "Formation",
+  
+  "timeline": "Timeline",
+  "statistics": "Statistics",
+  "possession": "Possession",
+  "shots": "Shots",
+  "shotsOnTarget": "Shots on Target",
+  "corners": "Corners",
+  "offsides": "Offsides",
+  "fouls": "Fouls",
+  
+  "startingXI": "Starting XI",
+  "substitutes": "Substitutes",
+  
+  "completed": "Completed",
+  "live": "Live",
+  "upcoming": "Upcoming",
+  
+  "fullTime": "Full Time",
+  "referee": "Referee",
+  
+  "noStandingsAvailable": "No standings available",
+  "noTeamsAvailable": "No teams available",
+  
+  "subscribe": "Subscribe",
+  "subscribed": "Subscribed",
+  "subscriptionSuccess": "You are now subscribed to {team} matches",
+  "unsubscriptionSuccess": "You have unsubscribed from {team} matches",
+  
+  "tryAgain": "Try Again",
+  
+  "rank": "Rank",
+  "team": "Team",
+  "played": "P",
+  "won": "W",
+  "drawn": "D",
+  "lost": "L",
+  "goalDifference": "GD",
+  "points": "PTS",
+  
+  "vs": "vs",
+  
+  "changeLanguage": "Change Language",
+  "english": "English",
+  "arabic": "العربية",
+  "language": "Language"
+}

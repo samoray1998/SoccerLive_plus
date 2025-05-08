@@ -1,0 +1,35 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'standing.dart';
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+Standing _$StandingFromJson(Map<String, dynamic> json) => Standing(
+      position: (json['position'] as num).toInt(),
+      team: Team.fromJson(json['team'] as Map<String, dynamic>),
+      playedGames: (json['playedGames'] as num).toInt(),
+      won: (json['won'] as num).toInt(),
+      draw: (json['draw'] as num).toInt(),
+      lost: (json['lost'] as num).toInt(),
+      points: (json['points'] as num).toInt(),
+      goalsFor: (json['goalsFor'] as num).toInt(),
+      goalsAgainst: (json['goalsAgainst'] as num).toInt(),
+      goalDifference: (json['goalDifference'] as num).toInt(),
+      form: json['form'] as String? ?? '',
+    );
+
+Map<String, dynamic> _$StandingToJson(Standing instance) => <String, dynamic>{
+      'position': instance.position,
+      'team': instance.team.toJson(),
+      'playedGames': instance.playedGames,
+      'won': instance.won,
+      'draw': instance.draw,
+      'lost': instance.lost,
+      'points': instance.points,
+      'goalsFor': instance.goalsFor,
+      'goalsAgainst': instance.goalsAgainst,
+      'goalDifference': instance.goalDifference,
+      'form': instance.form,
+    };

@@ -1,0 +1,67 @@
+{
+  "appTitle": "سوكر بلس",
+  
+  "todayMatches": "مباريات اليوم",
+  "competitions": "المسابقات",
+  "subscriptions": "الاشتراكات",
+  
+  "standings": "الترتيب",
+  "matches": "المباريات",
+  "teams": "الفرق",
+  
+  "searchCompetitions": "البحث عن مسابقات",
+  "noCompetitionsFound": "لم يتم العثور على مسابقات",
+  "favorites": "المفضلة فقط",
+  "upcomingMatches": "المباريات القادمة",
+  "noMatchesFound": "لم يتم العثور على مباريات",
+  
+  "matchDetails": "تفاصيل المباراة",
+  "summary": "ملخص",
+  "lineups": "التشكيلة",
+  "formation": "التكوين",
+  
+  "timeline": "الجدول الزمني",
+  "statistics": "الإحصائيات",
+  "possession": "الاستحواذ",
+  "shots": "التسديدات",
+  "shotsOnTarget": "التسديدات على المرمى",
+  "corners": "الركنيات",
+  "offsides": "التسلل",
+  "fouls": "الأخطاء",
+  
+  "startingXI": "التشكيلة الأساسية",
+  "substitutes": "البدلاء",
+  
+  "completed": "مكتملة",
+  "live": "مباشرة",
+  "upcoming": "قادمة",
+  
+  "fullTime": "وقت كامل",
+  "referee": "الحكم",
+  
+  "noStandingsAvailable": "لا يوجد ترتيب متاح",
+  "noTeamsAvailable": "لا توجد فرق متاحة",
+  
+  "subscribe": "اشتراك",
+  "subscribed": "مشترك",
+  "subscriptionSuccess": "أنت الآن مشترك في مباريات {team}",
+  "unsubscriptionSuccess": "لقد ألغيت اشتراكك من مباريات {team}",
+  
+  "tryAgain": "حاول مرة أخرى",
+  
+  "rank": "الترتيب",
+  "team": "الفريق",
+  "played": "لعب",
+  "won": "فوز",
+  "drawn": "تعادل",
+  "lost": "خسارة",
+  "goalDifference": "فرق الأهداف",
+  "points": "النقاط",
+  
+  "vs": "ضد",
+  
+  "changeLanguage": "تغيير اللغة",
+  "english": "English",
+  "arabic": "العربية",
+  "language": "اللغة"
+}
