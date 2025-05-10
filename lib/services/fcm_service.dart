@@ -5,8 +5,9 @@ import '../config/constants.dart';
 
 class FCMService {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-  
+  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
   // Initialize notifications
   Future<void> initNotifications() async {
     // Configure notification permissions
@@ -17,7 +18,7 @@ class FCMService {
         sound: true,
       );
     }
-    
+
     // Configure notification channels for Android
     if (Platform.isAndroid) {
       const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -26,19 +27,20 @@ class FCMService {
         description: AppConstants.notificationChannelDescription,
         importance: Importance.high,
       );
-      
+
       await _flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
               AndroidFlutterLocalNotificationsPlugin>()
           ?.createNotificationChannel(channel);
     }
-    
+
     // Initialize Flutter Local Notifications
-    const InitializationSettings initializationSettings = InitializationSettings(
+    const InitializationSettings initializationSettings =
+        InitializationSettings(
       android: AndroidInitializationSettings('@mipmap/ic_launcher'),
       iOS: DarwinInitializationSettings(),
     );
-    
+
     await _flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
       onDidReceiveNotificationResponse: (NotificationResponse response) {
@@ -46,19 +48,19 @@ class FCMService {
         // Handle notification click based on payload if needed
       },
     );
-    
+
     // Handle foreground messages
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print('Got a message whilst in the foreground!');
       print('Message data: ${message.data}');
-      
+
       if (message.notification != null) {
         print('Message also contained a notification: ${message.notification}');
         _showLocalNotification(message);
       }
     });
   }
-  
+
   // Request notification permissions and return if enabled
   Future<bool> requestPermission() async {
     final settings = await _firebaseMessaging.requestPermission(
@@ -70,11 +72,11 @@ class FCMService {
       provisional: false,
       sound: true,
     );
-    
+
     return settings.authorizationStatus == AuthorizationStatus.authorized ||
-           settings.authorizationStatus == AuthorizationStatus.provisional;
+        settings.authorizationStatus == AuthorizationStatus.provisional;
   }
-  
+
   // Get FCM token for the device
   Future<String?> getToken() async {
     try {
@@ -84,7 +86,7 @@ class FCMService {
       return null;
     }
   }
-  
+
   // Subscribe to a topic
   Future<void> subscribeToTopic(String topic) async {
     try {
@@ -95,7 +97,7 @@ class FCMService {
       throw Exception('Failed to subscribe to notifications: $e');
     }
   }
-  
+
   // Unsubscribe from a topic
   Future<void> unsubscribeFromTopic(String topic) async {
     try {
@@ -106,12 +108,12 @@ class FCMService {
       throw Exception('Failed to unsubscribe from notifications: $e');
     }
   }
-  
+
   // Display a local notification when receiving FCM in foreground
   Future<void> _showLocalNotification(RemoteMessage message) async {
     final notification = message.notification;
     final android = message.notification?.android;
-    
+
     if (notification != null) {
       await _flutterLocalNotificationsPlugin.show(
         notification.hashCode,
@@ -136,7 +138,7 @@ class FCMService {
       );
     }
   }
-  
+
   // Handle background messages
   static Future<void> backgroundMessageHandler(RemoteMessage message) async {
     print('Handling a background message: ${message.messageId}');

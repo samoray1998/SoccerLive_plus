@@ -42,14 +42,18 @@ class _TeamMatchesScreenState extends State<TeamMatchesScreen> {
 
       // In a real implementation, we would filter matches by team ID
       // For this demo, we'll reuse the competition matches
-      final competitionProvider = Provider.of<CompetitionProvider>(context, listen: false);
-      final allMatches = await competitionProvider.getMatches(widget.competitionId);
-      
+      final competitionProvider =
+          Provider.of<CompetitionProvider>(context, listen: false);
+      final allMatches =
+          await competitionProvider.getMatches(widget.competitionId);
+
       // Filter matches for this team
-      final teamMatches = allMatches.where((match) => 
-        match.homeTeam == widget.team.name || match.awayTeam == widget.team.name
-      ).toList();
-      
+      final teamMatches = allMatches
+          .where((match) =>
+              match.homeTeam == widget.team.name ||
+              match.awayTeam == widget.team.name)
+          .toList();
+
       setState(() {
         _matches = teamMatches;
         _isLoading = false;
@@ -64,13 +68,14 @@ class _TeamMatchesScreenState extends State<TeamMatchesScreen> {
 
   Future<void> _toggleSubscription() async {
     try {
-      final competitionProvider = Provider.of<CompetitionProvider>(context, listen: false);
+      final competitionProvider =
+          Provider.of<CompetitionProvider>(context, listen: false);
       await competitionProvider.toggleTeamSubscription(widget.team.id);
-      
+
       setState(() {
         _isSubscribed = !_isSubscribed;
       });
-      
+
       // Show success message
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -172,7 +177,7 @@ class _TeamMatchesScreenState extends State<TeamMatchesScreen> {
               ],
             ),
           ),
-          
+
           // Upcoming matches label
           Padding(
             padding: const EdgeInsets.all(16.0),
@@ -183,13 +188,13 @@ class _TeamMatchesScreenState extends State<TeamMatchesScreen> {
                 Text(
                   'Upcoming Matches',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
               ],
             ),
           ),
-          
+
           // Matches list
           Expanded(
             child: _isLoading
@@ -219,17 +224,19 @@ class _TeamMatchesScreenState extends State<TeamMatchesScreen> {
                             itemCount: _matches.length,
                             itemBuilder: (context, index) {
                               final match = _matches[index];
-                              final bool isHomeTeam = match.homeTeam == widget.team.name;
-                              
+                              final bool isHomeTeam =
+                                  match.homeTeam == widget.team.name;
+
                               return Card(
-                                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 8),
                                 child: InkWell(
                                   onTap: () {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => MatchDetailScreen(
-                                          matchId: match.id,
+                                          matchId: int.parse(match.id),
                                         ),
                                       ),
                                     );
@@ -240,7 +247,8 @@ class _TeamMatchesScreenState extends State<TeamMatchesScreen> {
                                       children: [
                                         // Match date
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
                                               '${_formatDate(match.date)} ${match.time}',
@@ -250,23 +258,29 @@ class _TeamMatchesScreenState extends State<TeamMatchesScreen> {
                                               ),
                                             ),
                                             Container(
-                                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 8,
+                                                      vertical: 2),
                                               decoration: BoxDecoration(
-                                                color: match.status == 'FT' 
-                                                    ? Colors.green 
-                                                    : match.status == 'NS' 
-                                                        ? Colors.grey[300] 
+                                                color: match.status == 'FT'
+                                                    ? Colors.green
+                                                    : match.status == 'NS'
+                                                        ? Colors.grey[300]
                                                         : Colors.orange,
-                                                borderRadius: BorderRadius.circular(4),
+                                                borderRadius:
+                                                    BorderRadius.circular(4),
                                               ),
                                               child: Text(
-                                                match.status == 'FT' 
-                                                    ? 'Completed' 
-                                                    : match.status == 'NS' 
-                                                        ? 'Upcoming' 
+                                                match.status == 'FT'
+                                                    ? 'Completed'
+                                                    : match.status == 'NS'
+                                                        ? 'Upcoming'
                                                         : 'Live',
                                                 style: TextStyle(
-                                                  color: match.status == 'NS' ? Colors.black87 : Colors.white,
+                                                  color: match.status == 'NS'
+                                                      ? Colors.black87
+                                                      : Colors.white,
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.bold,
                                                 ),
@@ -274,9 +288,9 @@ class _TeamMatchesScreenState extends State<TeamMatchesScreen> {
                                             ),
                                           ],
                                         ),
-                                        
+
                                         const SizedBox(height: 16),
-                                        
+
                                         // Teams
                                         Row(
                                           children: [
@@ -284,13 +298,18 @@ class _TeamMatchesScreenState extends State<TeamMatchesScreen> {
                                               child: Row(
                                                 children: [
                                                   ClipRRect(
-                                                    borderRadius: BorderRadius.circular(16),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            16),
                                                     child: Image.network(
                                                       match.homeTeamLogo,
                                                       width: 32,
                                                       height: 32,
-                                                      errorBuilder: (context, error, stackTrace) {
-                                                        return const Icon(Icons.sports_soccer, size: 24);
+                                                      errorBuilder: (context,
+                                                          error, stackTrace) {
+                                                        return const Icon(
+                                                            Icons.sports_soccer,
+                                                            size: 24);
                                                       },
                                                     ),
                                                   ),
@@ -299,18 +318,27 @@ class _TeamMatchesScreenState extends State<TeamMatchesScreen> {
                                                     child: Text(
                                                       match.homeTeam,
                                                       style: TextStyle(
-                                                        fontWeight: FontWeight.bold,
+                                                        fontWeight:
+                                                            FontWeight.bold,
                                                         fontSize: 14,
-                                                        color: isHomeTeam ? Theme.of(context).colorScheme.primary : null,
+                                                        color: isHomeTeam
+                                                            ? Theme.of(context)
+                                                                .colorScheme
+                                                                .primary
+                                                            : null,
                                                       ),
-                                                      overflow: TextOverflow.ellipsis,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                     ),
                                                   ),
                                                 ],
                                               ),
                                             ),
                                             Container(
-                                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 16,
+                                                      vertical: 8),
                                               child: Text(
                                                 match.score ?? 'vs',
                                                 style: const TextStyle(
@@ -321,29 +349,41 @@ class _TeamMatchesScreenState extends State<TeamMatchesScreen> {
                                             ),
                                             Expanded(
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.end,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
                                                 children: [
                                                   Expanded(
                                                     child: Text(
                                                       match.awayTeam,
                                                       style: TextStyle(
-                                                        fontWeight: FontWeight.bold,
+                                                        fontWeight:
+                                                            FontWeight.bold,
                                                         fontSize: 14,
-                                                        color: !isHomeTeam ? Theme.of(context).colorScheme.primary : null,
+                                                        color: !isHomeTeam
+                                                            ? Theme.of(context)
+                                                                .colorScheme
+                                                                .primary
+                                                            : null,
                                                       ),
                                                       textAlign: TextAlign.end,
-                                                      overflow: TextOverflow.ellipsis,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                     ),
                                                   ),
                                                   const SizedBox(width: 8),
                                                   ClipRRect(
-                                                    borderRadius: BorderRadius.circular(16),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            16),
                                                     child: Image.network(
                                                       match.awayTeamLogo,
                                                       width: 32,
                                                       height: 32,
-                                                      errorBuilder: (context, error, stackTrace) {
-                                                        return const Icon(Icons.sports_soccer, size: 24);
+                                                      errorBuilder: (context,
+                                                          error, stackTrace) {
+                                                        return const Icon(
+                                                            Icons.sports_soccer,
+                                                            size: 24);
                                                       },
                                                     ),
                                                   ),
@@ -364,7 +404,7 @@ class _TeamMatchesScreenState extends State<TeamMatchesScreen> {
       ),
     );
   }
-  
+
   String _formatDate(String dateStr) {
     try {
       final date = DateTime.parse(dateStr);

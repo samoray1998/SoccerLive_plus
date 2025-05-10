@@ -6,12 +6,12 @@ import '../services/firestore_service.dart';
 class NotificationsProvider with ChangeNotifier {
   final FCMService _fcmService;
   final FirestoreService _firestoreService;
-  
+
   bool _isInitialized = false;
   bool _areNotificationsEnabled = false;
   List<int> _subscribedMatchIds = [];
   String? _errorMessage;
-  
+
   NotificationsProvider(this._fcmService, this._firestoreService);
 
   bool get isInitialized => _isInitialized;
@@ -25,19 +25,20 @@ class NotificationsProvider with ChangeNotifier {
         // Initialize FCM
         final enabled = await _fcmService.requestPermission();
         _areNotificationsEnabled = enabled;
-        
+
         // Get device token
         final token = await _fcmService.getToken();
-        
+
         // Save token to Firestore
         if (token != null) {
           await _firestoreService.saveDeviceToken(userId, token);
         }
-        
+
         // Load subscribed matches
-        final subscriptions = await _firestoreService.getUserSubscriptions(userId);
+        final subscriptions =
+            await _firestoreService.getUserSubscriptions(userId);
         _subscribedMatchIds = subscriptions;
-        
+
         _isInitialized = true;
         notifyListeners();
       }
@@ -54,25 +55,25 @@ class NotificationsProvider with ChangeNotifier {
         _subscribedMatchIds.add(match.id);
         notifyListeners();
       }
-      
+
       // Subscribe to match topic in FCM
       final matchTopic = 'match_${match.id}';
       await _fcmService.subscribeToTopic(matchTopic);
-      
+
       // Save to Firestore
       await _firestoreService.addMatchSubscription(userId, match.id);
-      
+
       return true;
     } catch (e) {
       _errorMessage = 'Failed to subscribe to match: ${e.toString()}';
       print(_errorMessage);
-      
+
       // Roll back if failed
       if (_subscribedMatchIds.contains(match.id)) {
         _subscribedMatchIds.remove(match.id);
         notifyListeners();
       }
-      
+
       return false;
     }
   }
@@ -84,25 +85,25 @@ class NotificationsProvider with ChangeNotifier {
         _subscribedMatchIds.remove(match.id);
         notifyListeners();
       }
-      
+
       // Unsubscribe from match topic in FCM
       final matchTopic = 'match_${match.id}';
       await _fcmService.unsubscribeFromTopic(matchTopic);
-      
+
       // Remove from Firestore
       await _firestoreService.removeMatchSubscription(userId, match.id);
-      
+
       return true;
     } catch (e) {
       _errorMessage = 'Failed to unsubscribe from match: ${e.toString()}';
       print(_errorMessage);
-      
+
       // Roll back if failed
       if (!_subscribedMatchIds.contains(match.id)) {
         _subscribedMatchIds.add(match.id);
         notifyListeners();
       }
-      
+
       return false;
     }
   }
@@ -120,10 +121,10 @@ class NotificationsProvider with ChangeNotifier {
       // Subscribe to competition topic in FCM
       final competitionTopic = 'competition_$competitionId';
       await _fcmService.subscribeToTopic(competitionTopic);
-      
+
       // Save to Firestore
       await _firestoreService.addCompetitionSubscription(userId, competitionId);
-      
+
       return true;
     } catch (e) {
       _errorMessage = 'Failed to subscribe to competition: ${e.toString()}';
@@ -132,15 +133,17 @@ class NotificationsProvider with ChangeNotifier {
     }
   }
 
-  Future<bool> unsubscribeFromCompetition(String userId, int competitionId) async {
+  Future<bool> unsubscribeFromCompetition(
+      String userId, int competitionId) async {
     try {
       // Unsubscribe from competition topic in FCM
       final competitionTopic = 'competition_$competitionId';
       await _fcmService.unsubscribeFromTopic(competitionTopic);
-      
+
       // Remove from Firestore
-      await _firestoreService.removeCompetitionSubscription(userId, competitionId);
-      
+      await _firestoreService.removeCompetitionSubscription(
+          userId, competitionId);
+
       return true;
     } catch (e) {
       _errorMessage = 'Failed to unsubscribe from competition: ${e.toString()}';

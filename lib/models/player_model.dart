@@ -5,8 +5,8 @@ class Player {
   final String position;
   final int number;
   final String nationality;
-  final Map<String, dynamic> stats;
-  
+  final Map<dynamic, dynamic> stats;
+
   Player({
     required this.id,
     required this.name,
@@ -23,9 +23,10 @@ class MatchEvent {
   final int minute;
   final Player player;
   final Player? assistedBy;
-  final String? detail; // 'Yellow Card', 'Red Card', 'Own Goal', 'Penalty', etc.
+  final String?
+      detail; // 'Yellow Card', 'Red Card', 'Own Goal', 'Penalty', etc.
   final String team;
-  
+
   MatchEvent({
     required this.type,
     required this.minute,
@@ -39,7 +40,7 @@ class MatchEvent {
 class TeamFormation {
   final String formation; // e.g., '4-3-3', '3-5-2'
   final List<FormationPlayer> players;
-  
+
   TeamFormation({
     required this.formation,
     required this.players,
@@ -50,7 +51,7 @@ class FormationPlayer {
   final Player player;
   final double x; // position on field (0-100%)
   final double y; // position on field (0-100%)
-  
+
   FormationPlayer({
     required this.player,
     required this.x,
@@ -65,7 +66,7 @@ class MatchStatistics {
   final int corners;
   final int offsides;
   final int fouls;
-  
+
   MatchStatistics({
     required this.possession,
     required this.shots,
@@ -81,7 +82,7 @@ class MatchLineup {
   final List<Player> substitutes;
   final String formation;
   final TeamFormation teamFormation;
-  
+
   MatchLineup({
     required this.startingXI,
     required this.substitutes,
@@ -108,7 +109,7 @@ class MatchDetails {
   final MatchStatistics awayStats;
   final MatchLineup homeLineup;
   final MatchLineup awayLineup;
-  
+
   MatchDetails({
     required this.id,
     required this.homeTeam,

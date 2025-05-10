@@ -7,7 +7,7 @@ import '../screens/match_detail_screen.dart';
 class MatchCard extends StatelessWidget {
   final SoccerMatch match;
   final VoidCallback? onTap;
-  
+
   const MatchCard({
     Key? key,
     required this.match,
@@ -17,18 +17,19 @@ class MatchCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       elevation: 3,
       child: InkWell(
-        onTap: onTap ?? () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => MatchDetailScreen(matchId: match.id as String),
-            ),
-          );
-        },
+        onTap: onTap ??
+            () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => MatchDetailScreen(matchId: match.id),
+                ),
+              );
+            },
         child: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Column(
@@ -44,7 +45,8 @@ class MatchCard extends StatelessWidget {
                         match.competitionLogo,
                         width: 20,
                         height: 20,
-                        errorBuilder: (_, __, ___) => const Icon(Icons.sports_soccer, size: 20),
+                        errorBuilder: (_, __, ___) =>
+                            const Icon(Icons.sports_soccer, size: 20),
                       ),
                     ),
                   Expanded(
@@ -68,9 +70,9 @@ class MatchCard extends StatelessWidget {
                   ),
                 ],
               ),
-              
+
               const SizedBox(height: 12),
-              
+
               // Teams and score
               Row(
                 children: [
@@ -84,8 +86,8 @@ class MatchCard extends StatelessWidget {
                           child: Text(
                             match.homeTeam.name,
                             style: TextStyle(
-                              fontWeight: match.homeTeam.winner == true 
-                                  ? FontWeight.bold 
+                              fontWeight: match.homeTeam.winner == true
+                                  ? FontWeight.bold
                                   : FontWeight.normal,
                               fontSize: 16,
                             ),
@@ -96,14 +98,15 @@ class MatchCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                  
+
                   // Score
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 10),
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
-                      color: match.isLive 
-                          ? Colors.red.shade100 
+                      color: match.isLive
+                          ? Colors.red.shade100
                           : Theme.of(context).primaryColor.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(4),
                     ),
@@ -125,15 +128,15 @@ class MatchCard extends StatelessWidget {
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
-                            color: match.isLive 
-                                ? Colors.red.shade900 
+                            color: match.isLive
+                                ? Colors.red.shade900
                                 : Theme.of(context).primaryColor,
                           ),
                         ),
                       ],
                     ),
                   ),
-                  
+
                   // Away Team
                   Expanded(
                     child: Row(
@@ -142,8 +145,8 @@ class MatchCard extends StatelessWidget {
                           child: Text(
                             match.awayTeam.name,
                             style: TextStyle(
-                              fontWeight: match.awayTeam.winner == true 
-                                  ? FontWeight.bold 
+                              fontWeight: match.awayTeam.winner == true
+                                  ? FontWeight.bold
                                   : FontWeight.normal,
                               fontSize: 16,
                             ),
@@ -157,7 +160,7 @@ class MatchCard extends StatelessWidget {
                   ),
                 ],
               ),
-              
+
               if (match.stadium != null || match.referee != null)
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
@@ -198,7 +201,7 @@ class MatchCard extends StatelessWidget {
       ),
     );
   }
-  
+
   Widget _buildTeamLogo(String logoUrl) {
     return Container(
       width: 32,
@@ -220,67 +223,68 @@ class MatchCard extends StatelessWidget {
           width: 28,
           height: 28,
           fit: BoxFit.contain,
-          errorBuilder: (_, __, ___) => const Icon(Icons.sports_soccer, size: 20),
+          errorBuilder: (_, __, ___) =>
+              const Icon(Icons.sports_soccer, size: 20),
         ),
       ),
     );
   }
-  
+
   String _getMatchStatusText(SoccerMatch match, AppLocalizations l10n) {
     if (match.isLive) {
       return '${match.elapsed ?? ''}\'';
     }
-    
-    if (match.status == MatchStatus.fullTime || 
+
+    if (match.status == MatchStatus.fullTime ||
         match.status == MatchStatus.afterExtraTime ||
         match.status == MatchStatus.penalty) {
       return l10n.fullTime;
     }
-    
-    if (match.status == MatchStatus.notStarted || 
+
+    if (match.status == MatchStatus.notStarted ||
         match.status == MatchStatus.toBeDefined) {
       return match.time;
     }
-    
+
     // For other status values, return the capitalized status name
     final statusStr = match.status.toString().split('.').last;
     return statusStr.substring(0, 1).toUpperCase() + statusStr.substring(1);
   }
-  
+
   String _getScoreText(SoccerMatch match, AppLocalizations l10n) {
-    if (match.status == MatchStatus.notStarted || 
+    if (match.status == MatchStatus.notStarted ||
         match.status == MatchStatus.toBeDefined ||
         match.status == MatchStatus.postponed ||
         match.status == MatchStatus.cancelled) {
       return l10n.vs;
     }
-    
+
     return '${match.homeGoals ?? 0}-${match.awayGoals ?? 0}';
   }
-  
+
   Color _getStatusColor(MatchStatus status) {
-    if (status == MatchStatus.firstHalf || 
-        status == MatchStatus.secondHalf || 
-        status == MatchStatus.extraTime || 
+    if (status == MatchStatus.firstHalf ||
+        status == MatchStatus.secondHalf ||
+        status == MatchStatus.extraTime ||
         status == MatchStatus.penalty ||
         status == MatchStatus.halfTime ||
         status == MatchStatus.breakTime) {
       return Colors.red;
     }
-    
-    if (status == MatchStatus.fullTime || 
+
+    if (status == MatchStatus.fullTime ||
         status == MatchStatus.afterExtraTime) {
       return Colors.green;
     }
-    
-    if (status == MatchStatus.cancelled || 
-        status == MatchStatus.postponed || 
+
+    if (status == MatchStatus.cancelled ||
+        status == MatchStatus.postponed ||
         status == MatchStatus.suspended ||
         status == MatchStatus.interrupted ||
         status == MatchStatus.abandoned) {
       return Colors.orange;
     }
-    
+
     return Colors.grey;
   }
 }

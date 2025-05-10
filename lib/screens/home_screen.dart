@@ -190,7 +190,7 @@ class TodayMatchesTab extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => MatchDetailScreen(
-                                        matchId: liveMatches[index].id as String),
+                                        matchId: liveMatches[index].id),
                                   ),
                                 );
                               },

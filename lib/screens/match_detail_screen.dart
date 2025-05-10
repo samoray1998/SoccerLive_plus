@@ -11,8 +11,8 @@ import '../widgets/lineup_widget.dart';
 import '../widgets/match_events_timeline.dart';
 
 class MatchDetailScreen extends StatefulWidget {
-  final String matchId;
-  
+  final int matchId;
+
   const MatchDetailScreen({
     Key? key,
     required this.matchId,
@@ -33,23 +33,24 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
     _tabController.addListener(_handleTabChange);
-    
+
     // Get match data
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final matchesProvider = Provider.of<MatchesProvider>(context, listen: false);
+      final matchesProvider =
+          Provider.of<MatchesProvider>(context, listen: false);
       setState(() {
         _match = matchesProvider.getMatchById(widget.matchId as int);
       });
     });
   }
-  
+
   @override
   void dispose() {
     _tabController.removeListener(_handleTabChange);
     _tabController.dispose();
     super.dispose();
   }
-  
+
   void _handleTabChange() {
     if (_tabController.indexIsChanging) {
       setState(() {
@@ -72,7 +73,7 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
         ),
       );
     }
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Match Details'),
@@ -83,7 +84,7 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
         children: [
           // Match header with teams and score
           _buildMatchHeader(),
-          
+
           // Tab bar
           TabBar(
             controller: _tabController,
@@ -94,7 +95,7 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
               Tab(text: 'Statistics', icon: Icon(Icons.bar_chart)),
             ],
           ),
-          
+
           // Tab content
           Expanded(
             child: TabBarView(
@@ -113,7 +114,7 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
         onTap: (index) {
           // Navigate back to main screen with the appropriate tab selected
           Navigator.of(context).pop();
-          
+
           // Using a callback to notify the parent to switch tabs would be ideal
           // For now, we'll just navigate back to the main screen
         },
@@ -134,30 +135,30 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
       ),
     );
   }
-  
+
   Widget _buildMatchHeader() {
     final match = _match!;
-    
+
     // Status text
     String statusText = '';
     Color statusColor = Colors.black;
-    
+
     if (match.isLive) {
       statusText = 'LIVE';
       if (match.elapsed != null) {
         statusText += ' ${match.elapsed}\'';
       }
       statusColor = Colors.red;
-    } else if (match.status == MatchStatus.fullTime || 
-               match.status == MatchStatus.afterExtraTime || 
-               match.status == MatchStatus.penalty) {
+    } else if (match.status == MatchStatus.fullTime ||
+        match.status == MatchStatus.afterExtraTime ||
+        match.status == MatchStatus.penalty) {
       statusText = 'Full Time';
       statusColor = Colors.green[700]!;
     } else if (match.status == MatchStatus.notStarted) {
       statusText = '${match.date} ${match.time}';
       statusColor = Colors.blue;
     }
-    
+
     return Container(
       padding: const EdgeInsets.all(16),
       color: Colors.grey.shade100,
@@ -192,9 +193,9 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
               ),
             ],
           ),
-          
+
           const SizedBox(height: 20),
-          
+
           // Teams and score
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -222,19 +223,23 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
                               match.homeTeam.logo,
                               errorBuilder: (context, error, stackTrace) {
                                 return const Center(
-                                  child: Icon(Icons.sports_soccer, color: Colors.grey),
+                                  child: Icon(Icons.sports_soccer,
+                                      color: Colors.grey),
                                 );
                               },
                             )
                           : const Center(
-                              child: Icon(Icons.sports_soccer, color: Colors.grey),
+                              child:
+                                  Icon(Icons.sports_soccer, color: Colors.grey),
                             ),
                     ),
                     const SizedBox(height: 8),
                     Text(
                       match.homeTeam.name,
                       style: TextStyle(
-                        fontWeight: match.homeTeam.winner == true ? FontWeight.bold : FontWeight.normal,
+                        fontWeight: match.homeTeam.winner == true
+                            ? FontWeight.bold
+                            : FontWeight.normal,
                         fontSize: 16,
                       ),
                       textAlign: TextAlign.center,
@@ -242,10 +247,11 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
                   ],
                 ),
               ),
-              
+
               // Score
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(8),
@@ -282,7 +288,7 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
                   ],
                 ),
               ),
-              
+
               // Away team
               Expanded(
                 child: Column(
@@ -306,19 +312,23 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
                               match.awayTeam.logo,
                               errorBuilder: (context, error, stackTrace) {
                                 return const Center(
-                                  child: Icon(Icons.sports_soccer, color: Colors.grey),
+                                  child: Icon(Icons.sports_soccer,
+                                      color: Colors.grey),
                                 );
                               },
                             )
                           : const Center(
-                              child: Icon(Icons.sports_soccer, color: Colors.grey),
+                              child:
+                                  Icon(Icons.sports_soccer, color: Colors.grey),
                             ),
                     ),
                     const SizedBox(height: 8),
                     Text(
                       match.awayTeam.name,
                       style: TextStyle(
-                        fontWeight: match.awayTeam.winner == true ? FontWeight.bold : FontWeight.normal,
+                        fontWeight: match.awayTeam.winner == true
+                            ? FontWeight.bold
+                            : FontWeight.normal,
                         fontSize: 16,
                       ),
                       textAlign: TextAlign.center,
@@ -328,9 +338,9 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
               ),
             ],
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           // Venue info
           if (match.stadium != null)
             Row(
@@ -347,7 +357,7 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
                 ),
               ],
             ),
-          
+
           // Referee info
           if (match.referee != null) ...[
             const SizedBox(height: 4),
@@ -370,11 +380,11 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
       ),
     );
   }
-  
+
   Widget _buildSummaryTab() {
     final matchId = widget.matchId;
     final matchData = DummyDataService.getMatchDetails(matchId as int);
-    
+
     if (matchData.isEmpty) {
       return Center(
         child: Column(
@@ -396,7 +406,7 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
         ),
       );
     }
-    
+
     // Parse events data
     final List<dynamic> eventsData = matchData['summary']['events'];
     final List<MatchEvent> events = eventsData.map((eventData) {
@@ -412,22 +422,22 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
           nationality: eventData['player']['nationality'],
           stats: eventData['player']['stats'],
         ),
-        assistedBy: eventData['assistedBy'] != null 
-          ? Player(
-              id: eventData['assistedBy']['id'],
-              name: eventData['assistedBy']['name'],
-              photo: eventData['assistedBy']['photo'],
-              position: eventData['assistedBy']['position'],
-              number: eventData['assistedBy']['number'],
-              nationality: eventData['assistedBy']['nationality'],
-              stats: eventData['assistedBy']['stats'],
-            )
-          : null,
+        assistedBy: eventData['assistedBy'] != null
+            ? Player(
+                id: eventData['assistedBy']['id'],
+                name: eventData['assistedBy']['name'],
+                photo: eventData['assistedBy']['photo'],
+                position: eventData['assistedBy']['position'],
+                number: eventData['assistedBy']['number'],
+                nationality: eventData['assistedBy']['nationality'],
+                stats: eventData['assistedBy']['stats'],
+              )
+            : null,
         detail: eventData['detail'],
         team: eventData['team'],
       );
     }).toList();
-    
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -438,7 +448,7 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
             child: Text(
               'Timeline',
               style: TextStyle(
-                fontSize: 18, 
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -452,11 +462,11 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
       ),
     );
   }
-  
+
   Widget _buildLineupsTab() {
     final matchId = widget.matchId;
     final matchData = DummyDataService.getMatchDetails(matchId as int);
-    
+
     if (matchData.isEmpty) {
       return Center(
         child: Column(
@@ -478,71 +488,74 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
         ),
       );
     }
-    
+
     // Parse lineups data
     final Map<String, dynamic> homeLineupData = matchData['lineups']['home'];
     final Map<String, dynamic> awayLineupData = matchData['lineups']['away'];
-    
+
     // Home team players
     final List<dynamic> homeStartingXIData = homeLineupData['startingXI'];
     final List<dynamic> homeSubsData = homeLineupData['substitutes'];
-    final List<dynamic> homeFormationPositionsData = homeLineupData['formation_positions'];
-    
-    final List<Player> homeStartingXI = homeStartingXIData.map((playerData) => 
-      Player(
-        id: playerData['id'],
-        name: playerData['name'],
-        photo: playerData['photo'],
-        position: playerData['position'],
-        number: playerData['number'],
-        nationality: playerData['nationality'],
-        stats: playerData['stats'],
-      )
-    ).toList();
-    
-    final List<Player> homeSubs = homeSubsData.map((playerData) => 
-      Player(
-        id: playerData['id'],
-        name: playerData['name'],
-        photo: playerData['photo'],
-        position: playerData['position'],
-        number: playerData['number'],
-        nationality: playerData['nationality'],
-        stats: playerData['stats'],
-      )
-    ).toList();
-    
+    final List<dynamic> homeFormationPositionsData =
+        homeLineupData['formation_positions'];
+
+    final List<Player> homeStartingXI = homeStartingXIData
+        .map((playerData) => Player(
+              id: playerData['id'],
+              name: playerData['name'],
+              photo: playerData['photo'],
+              position: playerData['position'],
+              number: playerData['number'],
+              nationality: playerData['nationality'],
+              stats: playerData['stats'],
+            ))
+        .toList();
+
+    final List<Player> homeSubs = homeSubsData
+        .map((playerData) => Player(
+              id: playerData['id'],
+              name: playerData['name'],
+              photo: playerData['photo'],
+              position: playerData['position'],
+              number: playerData['number'],
+              nationality: playerData['nationality'],
+              stats: playerData['stats'],
+            ))
+        .toList();
+
     // Away team players
     final List<dynamic> awayStartingXIData = awayLineupData['startingXI'];
     final List<dynamic> awaySubsData = awayLineupData['substitutes'];
-    final List<dynamic> awayFormationPositionsData = awayLineupData['formation_positions'];
-    
-    final List<Player> awayStartingXI = awayStartingXIData.map((playerData) => 
-      Player(
-        id: playerData['id'],
-        name: playerData['name'],
-        photo: playerData['photo'],
-        position: playerData['position'],
-        number: playerData['number'],
-        nationality: playerData['nationality'],
-        stats: playerData['stats'],
-      )
-    ).toList();
-    
-    final List<Player> awaySubs = awaySubsData.map((playerData) => 
-      Player(
-        id: playerData['id'],
-        name: playerData['name'],
-        photo: playerData['photo'],
-        position: playerData['position'],
-        number: playerData['number'],
-        nationality: playerData['nationality'],
-        stats: playerData['stats'],
-      )
-    ).toList();
-    
+    final List<dynamic> awayFormationPositionsData =
+        awayLineupData['formation_positions'];
+
+    final List<Player> awayStartingXI = awayStartingXIData
+        .map((playerData) => Player(
+              id: playerData['id'],
+              name: playerData['name'],
+              photo: playerData['photo'],
+              position: playerData['position'],
+              number: playerData['number'],
+              nationality: playerData['nationality'],
+              stats: playerData['stats'],
+            ))
+        .toList();
+
+    final List<Player> awaySubs = awaySubsData
+        .map((playerData) => Player(
+              id: playerData['id'],
+              name: playerData['name'],
+              photo: playerData['photo'],
+              position: playerData['position'],
+              number: playerData['number'],
+              nationality: playerData['nationality'],
+              stats: playerData['stats'],
+            ))
+        .toList();
+
     // Create formation players
-    final List<FormationPlayer> homeFormationPlayers = homeFormationPositionsData.map((posData) {
+    final List<FormationPlayer> homeFormationPlayers =
+        homeFormationPositionsData.map((posData) {
       final playerId = posData['player_id'];
       final Player player = homeStartingXI.firstWhere((p) => p.id == playerId);
       return FormationPlayer(
@@ -551,8 +564,9 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
         y: posData['y'].toDouble(),
       );
     }).toList();
-    
-    final List<FormationPlayer> awayFormationPlayers = awayFormationPositionsData.map((posData) {
+
+    final List<FormationPlayer> awayFormationPlayers =
+        awayFormationPositionsData.map((posData) {
       final playerId = posData['player_id'];
       final Player player = awayStartingXI.firstWhere((p) => p.id == playerId);
       return FormationPlayer(
@@ -561,18 +575,18 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
         y: posData['y'].toDouble(),
       );
     }).toList();
-    
+
     // Create team formations
     final TeamFormation homeTeamFormation = TeamFormation(
       formation: homeLineupData['formation'],
       players: homeFormationPlayers,
     );
-    
+
     final TeamFormation awayTeamFormation = TeamFormation(
       formation: awayLineupData['formation'],
       players: awayFormationPlayers,
     );
-    
+
     // Create lineups
     final MatchLineup homeLineup = MatchLineup(
       startingXI: homeStartingXI,
@@ -580,14 +594,14 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
       formation: homeLineupData['formation'],
       teamFormation: homeTeamFormation,
     );
-    
+
     final MatchLineup awayLineup = MatchLineup(
       startingXI: awayStartingXI,
       substitutes: awaySubs,
       formation: awayLineupData['formation'],
       teamFormation: awayTeamFormation,
     );
-    
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -599,48 +613,48 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
             child: Text(
               'Formations',
               style: TextStyle(
-                fontSize: 18, 
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
-          
+
           FieldFormationWidget(
             formation: homeTeamFormation,
             teamName: _match!.homeTeam.name,
             teamColor: Colors.blue,
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           FieldFormationWidget(
             formation: awayTeamFormation,
             teamName: _match!.awayTeam.name,
             teamColor: Colors.red,
           ),
-          
+
           const Divider(height: 32),
-          
+
           // Home team lineup
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 16),
             child: Text(
               'Lineups',
               style: TextStyle(
-                fontSize: 18, 
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
-          
+
           LineupWidget(
             lineup: homeLineup,
             teamName: _match!.homeTeam.name,
             teamLogo: _match!.homeTeam.logo,
           ),
-          
+
           const SizedBox(height: 24),
-          
+
           LineupWidget(
             lineup: awayLineup,
             teamName: _match!.awayTeam.name,
@@ -650,11 +664,11 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
       ),
     );
   }
-  
+
   Widget _buildStatsTab() {
     final matchId = widget.matchId;
     final matchData = DummyDataService.getMatchDetails(matchId as int);
-    
+
     if (matchData.isEmpty) {
       return Center(
         child: Column(
@@ -676,11 +690,11 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
         ),
       );
     }
-    
+
     // Parse statistics data
     final Map<String, dynamic> homeStatsData = matchData['statistics']['home'];
     final Map<String, dynamic> awayStatsData = matchData['statistics']['away'];
-    
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -691,12 +705,12 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
             child: Text(
               'Match Statistics',
               style: TextStyle(
-                fontSize: 18, 
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
-          
+
           // Teams
           Row(
             children: [
@@ -732,9 +746,9 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
               ),
             ],
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           // Possession
           _buildStatRow(
             'Possession',
@@ -743,9 +757,9 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
             homeStatsData['possession'],
             awayStatsData['possession'],
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           // Shots
           _buildStatRow(
             'Shots',
@@ -754,9 +768,9 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
             homeStatsData['shots'],
             awayStatsData['shots'],
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           // Shots on target
           _buildStatRow(
             'Shots on Target',
@@ -765,9 +779,9 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
             homeStatsData['shotsOnTarget'],
             awayStatsData['shotsOnTarget'],
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           // Corners
           _buildStatRow(
             'Corners',
@@ -776,9 +790,9 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
             homeStatsData['corners'],
             awayStatsData['corners'],
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           // Offsides
           _buildStatRow(
             'Offsides',
@@ -787,9 +801,9 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
             homeStatsData['offsides'],
             awayStatsData['offsides'],
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           // Fouls
           _buildStatRow(
             'Fouls',
@@ -803,17 +817,19 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
       ),
     );
   }
-  
-  Widget _buildStatRow(String label, String homeValue, String awayValue, num homeNum, num awayNum, {bool invertColors = false}) {
+
+  Widget _buildStatRow(String label, String homeValue, String awayValue,
+      num homeNum, num awayNum,
+      {bool invertColors = false}) {
     // Calculate percentages
     final total = homeNum + awayNum;
     final homePercent = total > 0 ? homeNum / total * 100 : 50.0;
     final awayPercent = total > 0 ? awayNum / total * 100 : 50.0;
-    
+
     // Colors
     final homeColor = invertColors ? Colors.red.shade600 : Colors.blue.shade600;
     final awayColor = invertColors ? Colors.blue.shade600 : Colors.red.shade600;
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -824,9 +840,9 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
             color: Colors.grey.shade700,
           ),
         ),
-        
+
         const SizedBox(height: 4),
-        
+
         // Values row
         Row(
           children: [
@@ -855,9 +871,9 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
             ),
           ],
         ),
-        
+
         const SizedBox(height: 8),
-        
+
         // Bar visualization
         SizedBox(
           height: 10,
